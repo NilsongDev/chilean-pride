@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBio - Bioestimulantes y Fertilizantes Orgánicos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS for animations and effects */
+        .hero-gradient {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #4CAF50;
+            transition: width .3s;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+        
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
+        /* Popup styles */
+        #product-popup {
+            transition: opacity 0.3s ease;
+        }
+        
+        #product-popup.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        #product-popup .bg-white {
+            animation: popIn 0.3s ease-out forwards;
+        }
+        
+        @keyframes popIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-leaf text-green-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-green-800">AgroBio</span>
+                    </div>
+                    <!-- Desktop Navigation -->
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#inicio" class="nav-link border-green-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Inicio</a>
+                        <a href="#productos" class="nav-link border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Productos</a>
+                        <a href="#beneficios" class="nav-link border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Beneficios</a>
+                        <a href="#nosotros" class="nav-link border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Nosotros</a>
+                        <a href="#contacto" class="nav-link border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Contacto</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="hidden sm:hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#inicio" class="bg-green-50 border-green-500 text-green-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Inicio</a>
+                <a href="#productos" class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Productos</a>
+                <a href="#beneficios" class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Beneficios</a>
+                <a href="#nosotros" class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Nosotros</a>
+                <a href="#contacto" class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-gradient py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+                <div class="animate-fade-in">
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Potencia tus cultivos con nuestros <span class="text-green-600">bioestimulantes</span></h1>
+                    <p class="text-lg text-gray-600 mb-8">Productos orgánicos de alta calidad que mejoran el rendimiento de tus cultivos de forma natural y sostenible.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#productos" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-center transition duration-300 transform hover:scale-105">Ver Productos</a>
+                        <a href="#contacto" class="border-2 border-green-600 text-green-600 hover:bg-green-50 font-bold py-3 px-6 rounded-lg text-center transition duration-300 transform hover:scale-105">Contactar</a>
+                    </div>
+                </div>
+                <div class="mt-12 lg:mt-0 animate-fade-in delay-100">
+                    <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Cultivos saludables" class="rounded-lg shadow-xl w-full h-auto object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section id="productos" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestros Productos Destacados</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Soluciones naturales para cada etapa del crecimiento de tus cultivos</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Bioestimulante Vegetal" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Novedad</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">BioActiv Plus</h3>
+                        <p class="text-gray-600 mb-4">Bioestimulante vegetal que potencia el crecimiento y resistencia de las plantas.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-600 font-bold text-lg">$24.99</span>
+                            <button class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-4 py-2 text-center product-detail-btn"
+                                    data-title="BioActiv Plus" 
+                                    data-category="Bioestimulante Vegetal" 
+                                    data-image="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                                    data-price="$24.99"
+                                    data-description="Bioestimulante vegetal de alta calidad que potencia el crecimiento y resistencia de las plantas mediante la activación de sus procesos naturales."
+                                    data-features="Aumenta la absorción de nutrientes|Mejora la resistencia al estrés hídrico|Estimula el desarrollo radicular|100% orgánico y biodegradable">
+                                Más info
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Fertilizante Orgánico" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Más vendido</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">FertiOrganic</h3>
+                        <p class="text-gray-600 mb-4">Fertilizante 100% orgánico que mejora la estructura del suelo y nutrición vegetal.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-600 font-bold text-lg">$19.99</span>
+                            <button class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-4 py-2 text-center">Más info</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Protector Natural" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">Ecológico</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Defensa Natural</h3>
+                        <p class="text-gray-600 mb-4">Protector ecológico que fortalece las plantas contra plagas y enfermedades.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-600 font-bold text-lg">$29.99</span>
+                            <button class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-4 py-2 text-center">Más info</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" id="show-more-products" class="inline-flex items-center text-green-600 hover:text-green-800 font-medium">
+                    Ver todos los productos
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Additional Products (hidden by default) -->
+            <div id="more-products" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                <!-- Product 4 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Bioestimulante Frutal" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">Especial</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">FruitBoost</h3>
+                        <p class="text-gray-600 mb-4">Bioestimulante específico para árboles frutales que mejora tamaño y dulzor.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-600 font-bold text-lg">$27.99</span>
+                            <button class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-4 py-2 text-center">Más info</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Microorganismos" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Premium</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">MicroLife</h3>
+                        <p class="text-gray-600 mb-4">Consorcio de microorganismos beneficiosos para la salud del suelo.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-600 font-bold text-lg">$34.99</span>
+                            <button class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-4 py-2 text-center">Más info</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="product-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 ease-in-out">
+                    <div class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Enraizante" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Recomendado</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">RootMax</h3>
+                        <p class="text-gray-600 mb-4">Enraizante natural para esquejes y trasplantes con hormonas vegetales.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-600 font-bold text-lg">$22.99</span>
+                            <button class="text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-4 py-2 text-center">Más info</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="beneficios" class="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Beneficios de Nuestros Productos</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Por qué elegir nuestros bioestimulantes y fertilizantes orgánicos</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center animate-fade-in delay-100">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-leaf text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">100% Orgánico</h3>
+                    <p class="text-gray-600">Ingredientes naturales sin químicos dañinos para tus cultivos y el medio ambiente.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center animate-fade-in delay-200">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Mayor Rendimiento</h3>
+                    <p class="text-gray-600">Aumenta la productividad de tus cultivos hasta en un 30% con nuestros productos.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center animate-fade-in delay-300">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Resistencia Natural</h3>
+                    <p class="text-gray-600">Fortalece las plantas contra plagas, enfermedades y condiciones climáticas adversas.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center animate-fade-in delay-400">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-globe-americas text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Sostenibilidad</h3>
+                    <p class="text-gray-600">Contribuye a la regeneración del suelo y al equilibrio del ecosistema agrícola.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials 
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Lo que dicen nuestros clientes</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Agricultores que han confiado en nuestros productos</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Juan Pérez" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Juan Pérez</h4>
+                            <p class="text-sm text-gray-600">Agricultor de maíz</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Desde que uso los bioestimulantes de AgroBio, mis cosechas han aumentado un 25% y la calidad del producto es notablemente mejor."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="María Gómez" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">María Gómez</h4>
+                            <p class="text-sm text-gray-600">Productora de hortalizas</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"Los fertilizantes orgánicos han transformado mi huerto. Las plantas están más saludables y el suelo ha recuperado su vitalidad."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Carlos Ruiz" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900">Carlos Ruiz</h4>
+                            <p class="text-sm text-gray-600">Viñatero</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"La resistencia que han desarrollado mis viñas a las plagas es increíble. Además, el proceso de certificación orgánica fue más fácil gracias a sus productos."</p>
+                    <div class="flex mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+
+    <!-- About Us -->
+    <section id="nosotros" class="py-16 px-4 sm:px-6 lg:px-8 bg-green-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                <div class="mb-12 lg:mb-0">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Nuestra Historia</h2>
+                    <p class="text-lg text-gray-700 mb-6">AgroBio nació en 2010 con la misión de desarrollar soluciones naturales para la agricultura, combinando el conocimiento tradicional con la innovación científica.</p>
+                    <p class="text-lg text-gray-700 mb-6">Nuestro equipo de agrónomos e investigadores trabaja constantemente para mejorar nuestras formulaciones, siempre con el compromiso de la sostenibilidad y el respeto al medio ambiente.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-gray-700">Certificaciones orgánicas</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-gray-700">Investigación constante</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-gray-700">Compromiso ambiental</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1601134467661-3d775b999c8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1375&q=80" alt="Equipo AgroBio" class="rounded-lg shadow-lg w-full h-auto">
+                    <div class="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-md hidden md:block">
+                        <div class="flex items-center">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-award text-green-600 text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-900">Premio a la Innovación Agrícola 2022</p>
+                                <p class="text-sm text-gray-600">Reconocimiento a nuestra investigación en bioestimulantes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-green-600 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-6">¿Listo para transformar tus cultivos?</h2>
+            <p class="text-xl mb-8">Contáctanos hoy mismo y descubre cómo nuestros productos pueden mejorar tu producción de forma natural y sostenible.</p>
+            <a href="#contacto" class="bg-white text-green-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-lg inline-block transition duration-300 transform hover:scale-105">Contactar Ahora</a>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section id="contacto" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-12">
+                <div class="mb-12 lg:mb-0">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Contáctanos</h2>
+                    <p class="text-lg text-gray-600 mb-8">Estamos aquí para responder tus preguntas y asesorarte sobre los mejores productos para tus necesidades.</p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-map-marker-alt text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Dirección</h4>
+                                <p class="text-gray-600">Av. Agricultura 1234, Ciudad Agropecuaria</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-phone-alt text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Teléfono</h4>
+                                <p class="text-gray-600">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-envelope text-green-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900">Email</h4>
+                                <p class="text-gray-600">info@agrobio.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h4 class="font-bold text-gray-900 mb-4">Síguenos</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center text-gray-700">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
+                    <form id="contact-form">
+                        <div class="mb-6">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Nombre</label>
+                            <input type="text" id="name" name="name" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo letras y espacios" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Tu nombre" required>
+                            <p class="text-red-500 text-sm mt-1 hidden" id="name-error">Solo se permiten letras y espacios</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="tu@email.com" required>
+                            <p class="text-red-500 text-sm mt-1 hidden" id="email-error">Ingresa un email válido</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="phone" class="block text-gray-700 font-medium mb-2">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" pattern="56[0-9]{8,12}" title="Debe comenzar con 56 y tener al menos 10 dígitos" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="56912345678" required>
+                            <p class="text-red-500 text-sm mt-1 hidden" id="phone-error">Debe comenzar con 56 y tener al menos 10 dígitos</p>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Mensaje</label>
+                            <textarea id="message" name="message" rows="4" maxlength="200" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Tu mensaje (máximo 200 caracteres)" required></textarea>
+                            <p class="text-gray-500 text-sm mt-1"><span id="char-count">0</span>/200 caracteres</p>
+                            <p class="text-red-500 text-sm mt-1 hidden" id="message-error">El mensaje no puede exceder los 200 caracteres</p>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">Enviar Mensaje</button>
+                        <p class="text-green-500 text-center mt-4 hidden" id="success-message">¡Mensaje enviado con éxito!</p>
+                        <p class="text-red-500 text-center mt-4 hidden" id="error-message">Error al enviar el mensaje. Inténtalo nuevamente.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-leaf text-green-400 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold">AgroBio</span>
+                    </div>
+                    <p class="text-gray-400">Soluciones naturales para una agricultura sostenible y productiva.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-3">Productos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Bioestimulantes</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Fertilizantes Orgánicos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Protectores Naturales</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Mejoradores de Suelo</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-3">Enlaces</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#inicio" class="text-gray-400 hover:text-white transition">Inicio</a></li>
+                        <li><a href="#productos" class="text-gray-400 hover:text-white transition">Productos</a></li>
+                        <li><a href="#beneficios" class="text-gray-400 hover:text-white transition">Beneficios</a></li>
+                        <li><a href="#nosotros" class="text-gray-400 hover:text-white transition">Nosotros</a></li>
+                        <li><a href="#contacto" class="text-gray-400 hover:text-white transition">Contacto</a></li>
+                    </ul>
+                </div>
+                <!-- Newsletter Subscription 
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Suscríbete</h4>
+                    <p class="text-gray-400 mb-4">Recibe noticias y promociones especiales.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Tu email" class="px-4 py-2 rounded-l-lg focus:outline-none text-gray-900 w-full">
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-r-lg">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            -->
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="w-full flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm mb-3 md:mb-0 text-center w-full md:w-auto">© 2025 Chilean-Pride. Todos los derechos reservados.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0 md:ml-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+        </div>
+    </footer>
+
+    <!-- Product Details Popup -->
+    <div id="product-popup" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 id="popup-title" class="text-2xl font-bold text-gray-900"></h3>
+                        <p id="popup-category" class="text-sm text-gray-500 mt-1"></p>
+                    </div>
+                    <button id="close-popup" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <img id="popup-image" src="" alt="" class="w-full h-64 object-cover rounded-lg">
+                    </div>
+                    <div>
+                        <p id="popup-description" class="text-gray-700 mb-6"></p>
+                        
+                        <div class="mb-6">
+                            <h4 class="font-bold text-gray-900 mb-3">Características:</h4>
+                            <ul id="popup-features" class="list-disc pl-5 space-y-2 text-gray-700">
+                                <!-- Features will be added by JS -->
+                            </ul>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <span id="popup-price" class="text-green-600 font-bold text-xl"></span>
+                            <button class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg">
+                                Comprar ahora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 bg-green-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Form validation and submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contact-form');
+            const messageInput = document.getElementById('message');
+            const charCount = document.getElementById('char-count');
+            
+            // Character counter for message
+            messageInput.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Reset error messages
+                document.querySelectorAll('[id$="-error"]').forEach(el => el.classList.add('hidden'));
+                document.getElementById('error-message').classList.add('hidden');
+                
+                // Validate form
+                let isValid = true;
+                
+                // Name validation (letters only)
+                const name = document.getElementById('name');
+                if (!/^[A-Za-záéíóúÁÉÍÓÚñÑ\s]+$/.test(name.value)) {
+                    document.getElementById('name-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Email validation
+                const email = document.getElementById('email');
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                    document.getElementById('email-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Phone validation (starts with 56)
+                const phone = document.getElementById('phone');
+                if (!/^56\d{8,12}$/.test(phone.value)) {
+                    document.getElementById('phone-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                // Message validation (max 200 chars)
+                if (messageInput.value.length > 200) {
+                    document.getElementById('message-error').classList.remove('hidden');
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Prepare form data
+                    const formData = new FormData(form);
+                    
+                    // Here you would typically send the data to your server
+                    // For demonstration, we'll simulate a successful submission
+                    setTimeout(() => {
+                        document.getElementById('success-message').classList.remove('hidden');
+                        form.reset();
+                        charCount.textContent = '0';
+                        
+                        // In a real implementation, you would:
+                        // 1. Send data to your server (PHP, Node.js, etc.)
+                        // 2. Your server would then send the email
+                        // Example PHP code would look like:
+                        /*
+                        <?php
+                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                            $to = "tu@email.com"; // Your email here
+                            $subject = "Nuevo mensaje de contacto";
+                            $message = "Nombre: ".$_POST['name']."\n";
+                            $message .= "Email: ".$_POST['email']."\n";
+                            $message .= "Teléfono: ".$_POST['phone']."\n";
+                            $message .= "Mensaje: ".$_POST['message'];
+                            $headers = "From: ".$_POST['email'];
+                            
+                            if (mail($to, $subject, $message, $headers)) {
+                                echo "success";
+                            } else {
+                                echo "error";
+                            }
+                        }
+                        ?>
+                        */
+                    }, 1000);
+                }
+            });
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('hidden');
+            
+            // Change icon
+            const icon = mobileMenuButton.querySelector('i');
+            if (expanded) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        const icon = mobileMenuButton.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                }
+            });
+        });
+        
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Show more products with animation
+        const showMoreBtn = document.getElementById('show-more-products');
+        const moreProducts = document.getElementById('more-products');
+        
+        showMoreBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            if (moreProducts.classList.contains('hidden')) {
+                moreProducts.classList.remove('hidden');
+                moreProducts.style.opacity = '0';
+                moreProducts.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    moreProducts.style.transition = 'all 0.5s ease-out';
+                    moreProducts.style.opacity = '1';
+                    moreProducts.style.transform = 'translateY(0)';
+                    
+                    // Scroll to the new products
+                    moreProducts.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 50);
+                
+                showMoreBtn.innerHTML = 'Ocultar productos <i class="fas fa-arrow-up ml-2"></i>';
+            } else {
+                moreProducts.style.transition = 'all 0.3s ease-out';
+                moreProducts.style.opacity = '0';
+                moreProducts.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    moreProducts.classList.add('hidden');
+                    showMoreBtn.innerHTML = 'Ver todos los productos <i class="fas fa-arrow-right ml-2"></i>';
+                }, 300);
+            }
+        });
+
+        // Add animation classes when elements come into view
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate-fade-in');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Product popup functionality
+        const productButtons = document.querySelectorAll('.product-detail-btn');
+        const popup = document.getElementById('product-popup');
+        const closePopup = document.getElementById('close-popup');
+        
+        productButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Get product data from data attributes
+                document.getElementById('popup-title').textContent = button.dataset.title;
+                document.getElementById('popup-category').textContent = button.dataset.category;
+                document.getElementById('popup-image').src = button.dataset.image;
+                document.getElementById('popup-image').alt = button.dataset.title;
+                document.getElementById('popup-price').textContent = button.dataset.price;
+                document.getElementById('popup-description').textContent = button.dataset.description;
+                
+                // Add features
+                const featuresList = document.getElementById('popup-features');
+                featuresList.innerHTML = '';
+                const features = button.dataset.features.split('|');
+                features.forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature;
+                    featuresList.appendChild(li);
+                });
+                
+                // Show popup
+                popup.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closePopup.addEventListener('click', () => {
+            popup.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close popup when clicking outside
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) {
+                popup.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
